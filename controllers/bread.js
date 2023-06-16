@@ -32,8 +32,34 @@ async function createBread(req, res) {
     }
 }
 
+async function updateBreadById(req, res) {
+    console.log(req.body)
+    try {
+        const { id } = req.params
+        if (!req.body.image) req.body.image = undefined
+        await Bread.findByIdAndUpdate(id, req.body)
+        res.status(204).json({ 'message': 'bread updated' })
+    } catch (error) {
+        console.log('error updating bread:', error)
+        res.json({ 'message': 'error updating bread' })
+    }
+}
+
+async function deleteBreadById(req, res) {
+    try {
+        const { id } = req.params
+        await Bread.findByIdAndDelete(id)
+        res.status(204).json({ 'message': 'bread deleted' })
+    } catch (error) {
+        console.log('error deleting bread:', error)
+        res.json({ 'message': 'error deleting bread' })
+    }
+}
+
 module.exports = {
     getAllBread,
     getBreadById,
     createBread,
+    deleteBreadById,
+    updateBreadById, 
 }
